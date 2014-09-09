@@ -24,8 +24,6 @@ var path = require('..');
 
 var isWindows = process.platform === 'win32';
 
-var f = __filename;
-
 assert.equal(path.extname(''), '');
 assert.equal(path.extname('/path/to/file'), '');
 assert.equal(path.extname('/path/to/file.ext'), '.ext');

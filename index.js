@@ -16,20 +16,25 @@ exports.extname = function (filename) {
   if (!filename) return '';
 
   var end = filename[filename.length - 1];
-  while (end === path.sep) {
+  while (end === path.sep || end === '/') {
     filename = filename.slice(0, -1);
     end = filename[filename.length - 1];
   }
 
   var lastDot = filename.lastIndexOf('.');
-  var lastSep = filename.lastIndexOf(path.sep);
+  var lastSep = filename.lastIndexOf('/');
+  if (process.platform === 'win32') {
+    lastSep = Math.max(lastSep, filename.lastIndexOf('\\'));
+  }
 
   if (lastDot < lastSep + 2) return '';
   var extname = filename.slice(lastDot);
 
-  if (extname === '.'
-    && filename[lastDot - 1] === '.'
-    && (lastDot === 1 || filename[lastDot - 2] === path.sep)) return '';
+  if (extname === '.' && filename[lastDot - 1] === '.') {
+    if (lastDot === 1) return '';
+    var pre = filename[lastDot - 2];
+    if (pre === '/' || pre === path.sep) return '';
+  }
 
   return extname;
- };
+};
