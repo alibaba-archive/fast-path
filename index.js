@@ -21,10 +21,19 @@ exports.extname = function (filename) {
     end = filename[filename.length - 1];
   }
 
-  var lastDot = filename.lastIndexOf('.');
-  var lastSep = filename.lastIndexOf('/');
-  if (process.platform === 'win32') {
-    lastSep = Math.max(lastSep, filename.lastIndexOf('\\'));
+  var lastDot = -1;
+  var lastSep = -1;
+  var isWindows = process.platform === 'win32';
+
+  for (var i = filename.length; i--; ) {
+    var ch = filename[i];
+    if (lastDot === -1 && ch === '.') lastDot = i;
+    else if (lastSep === -1 && ch === '/') lastSep = i;
+    else if (isWindows && lastSep === -1 && ch === '\\') lastSep = i;
+
+    if (lastSep !== -1 && lastDot === -1) return '';
+    if (lastDot !== -1 && i === lastDot - 2) break;
+    if (lastSep !== -1 && lastDot !== -1) break;
   }
 
   if (lastDot < lastSep + 2) return '';
