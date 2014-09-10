@@ -43,7 +43,6 @@ suite
 })
 .on('complete', function done() {
   benchmarks.log();
-  process.exit(0);
 })
 .run({ 'async': false });
 
