@@ -18,12 +18,21 @@ var fpath = require('..');
 
 var suite = new Benchmark.Suite();
 
+var shortPath = 'abc/def/zzz.js';
+var longPath = '/home/Users/name/git/project/lib/abc/def/zzz.js';
+
 suite
-.add('path.extname("/abcde/../xxx/yyy/zzz.js")', function () {
-  path.extname('/abcde/../xxx/yyy/zzz.js');
+.add('path.extname(shortPath)', function () {
+  path.extname(shortPath);
 })
-.add('fpath.extname("/abcde/../xxx/yyy/zzz.js")', function () {
-  fpath.extname('/abcde/../xxx/yyy/zzz.js');
+.add('fpath.extname(shortPath)', function () {
+  fpath.extname(shortPath);
+})
+.add('path.extname(longPath)', function () {
+  path.extname(longPath);
+})
+.add('fpath.extname(longPath)', function () {
+  fpath.extname(longPath);
 })
 
 .on('cycle', function(event) {
@@ -38,16 +47,20 @@ suite
 })
 .run({ 'async': false });
 
-// node version: v0.11.13, date: Wed Sep 10 2014 00:56:20 GMT+0800 (CST)
+// node version: v0.11.13, date: Wed Sep 10 2014 09:26:24 GMT+0800 (CST)
 // Starting...
-// 2 tests completed.
+// 4 tests completed.
 
-// path.extname("/abcde/../xxx/yyy/zzz.js")  x  1,179,062 ops/sec ±1.33% (98 runs sampled)
-// fpath.extname("/abcde/../xxx/yyy/zzz.js") x 11,386,453 ops/sec ±0.74% (94 runs sampled)
-//
-// node version: v0.10.31, date: Wed Sep 10 2014 00:57:23 GMT+0800 (CST)
+// path.extname(shortPath)  x 1,898,668 ops/sec ±0.53% (98 runs sampled)
+// fpath.extname(shortPath) x 8,919,520 ops/sec ±1.04% (96 runs sampled)
+// path.extname(longPath)   x   663,666 ops/sec ±0.76% (97 runs sampled)
+// fpath.extname(longPath)  x 9,204,262 ops/sec ±0.85% (99 runs sampled)
+
+// node version: v0.10.31, date: Wed Sep 10 2014 09:26:54 GMT+0800 (CST)
 // Starting...
-// 2 tests completed.
+// 4 tests completed.
 
-// path.extname("/abcde/../xxx/yyy/zzz.js")  x  1,270,023 ops/sec ±0.53% (98 runs sampled)
-// fpath.extname("/abcde/../xxx/yyy/zzz.js") x 10,069,876 ops/sec ±0.93% (92 runs sampled)
+// path.extname(shortPath)  x 2,063,175 ops/sec ±1.37% (96 runs sampled)
+// fpath.extname(shortPath) x 7,746,810 ops/sec ±1.29% (94 runs sampled)
+// path.extname(longPath)   x   658,861 ops/sec ±0.83% (94 runs sampled)
+// fpath.extname(longPath)  x 7,849,435 ops/sec ±0.92% (94 runs sampled)
