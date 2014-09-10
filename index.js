@@ -145,3 +145,18 @@ function getDevice(filename) {
   var result = splitDeviceRe.exec(filename);
   return (result[1] || '') + (result[2] || '');
 }
+
+var all = [
+    'basename',
+    'dirname',
+    'extname'
+  ];
+
+exports.replace = function (methods) {
+  if (!methods) methods = all;
+  if (!Array.isArray(methods)) methods = [methods];
+
+  methods.forEach(function (name) {
+    if (exports[name]) path[name] = exports[name];
+  });
+}

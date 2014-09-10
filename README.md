@@ -27,7 +27,19 @@ $ npm install fast-path
 
 ## APIs
 
-* **extname(filenamt)**
+* **extname(filename)**
+* **dirname(filename)**
+* **basename(filename)**
+
+## Usage
+
+If you want to replace these APIs in native path:
+
+```js
+require('fast-path').replace();  // replace all
+require('fast-path').replace('dirname');  // replace `dirname`
+require('fast-path').replace(['dirname', 'extname']); // replace `dirname` and `extname`
+```
 
 ### License
 
