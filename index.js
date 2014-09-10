@@ -95,3 +95,39 @@ exports.basename = function (filename, ext) {
 
   return basename;
 };
+
+exports.dirname = function (filename) {
+  if (!filename) return '.';
+
+  // /a.js///
+  var end = filename.length;
+  var c = filename[end - 1];
+  while (c === path.sep || c === '/') {
+    end--;
+    c = filename[end - 1];
+  }
+
+  var lastSep = -1;
+  var isWindows = process.platform === 'win32';
+
+  for (var i = end; i--; ) {
+    var ch = filename[i];
+    if (lastSep === -1 && ch === '/') {
+      lastSep = i;
+      break;
+    }
+    if (isWindows && lastSep === -1 && ch === '\\') {
+      lastSep = i;
+      break;
+    }
+  }
+
+  if (lastSep === 0) return filename[0];
+  if (lastSep === -1) {
+    if (filename[0] === '/' || filename[0] === path.sep) return filename[0];
+    return '.';
+  }
+
+  return filename.slice(0, lastSep);
+};
+
