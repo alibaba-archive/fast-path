@@ -17,16 +17,17 @@ exports.extname = function (filename) {
 
   // /a.js///
   var end = filename.length;
-  while (filename[end - 1] === path.sep || end === '/') {
+  var c = filename[end - 1];
+  while (c === path.sep || c === '/') {
     end--;
+    c = filename[end - 1];
   }
-  filename = filename.substr(0, end);
 
   var lastDot = -1;
   var lastSep = -1;
   var isWindows = process.platform === 'win32';
 
-  for (var i = filename.length; i--; ) {
+  for (var i = end; i--; ) {
     var ch = filename[i];
     if (lastDot === -1 && ch === '.') lastDot = i;
     else if (lastSep === -1 && ch === '/') lastSep = i;
@@ -43,7 +44,7 @@ exports.extname = function (filename) {
   // ./js and /.js
   if (lastDot < lastSep + 2) return '';
 
-  var extname = filename.slice(lastDot);
+  var extname = filename.slice(lastDot, end);
   if (extname === '.' && filename[lastDot - 1] === '.') {
     // ..
     if (lastDot === 1) return '';
@@ -53,4 +54,44 @@ exports.extname = function (filename) {
   }
 
   return extname;
+};
+
+exports.basename = function (filename, ext) {
+  if (!filename) return '';
+
+  // /a.js///
+  var end = filename.length;
+  var c = filename[end - 1];
+  while (c === path.sep || c === '/') {
+    end--;
+    c = filename[end - 1];
+  }
+
+  var lastSep = -1;
+  var isWindows = process.platform === 'win32';
+
+  for (var i = end; i--; ) {
+    var ch = filename[i];
+    if (lastSep === -1 && ch === '/') {
+      lastSep = i;
+      break;
+    }
+    if (isWindows && lastSep === -1 && ch === '\\') {
+      lastSep = i;
+      break;
+    }
+  }
+
+  var basename = filename.slice(lastSep + 1, end);
+
+  if (ext) {
+    var match = basename.lastIndexOf(ext);
+    if (match === -1
+      || match !== basename.length - ext.length) {
+      return basename;
+    }
+    return basename.slice(0, basename.length - ext.length);
+  }
+
+  return basename;
 };

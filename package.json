@@ -4,7 +4,7 @@
   "description": "a fast implementation of node's native path",
   "main": "index.js",
   "scripts": {
-    "test": "node test/index.test.js"
+    "test": "node test/test-path.js"
   },
   "keywords": [
     "path"

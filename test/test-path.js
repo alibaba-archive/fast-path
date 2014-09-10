@@ -24,6 +24,45 @@ var path = require('..');
 
 var isWindows = process.platform === 'win32';
 
+var f = __filename;
+
+assert.equal(path.basename(f), 'test-path.js');
+assert.equal(path.basename(f, '.js'), 'test-path');
+assert.equal(path.basename(''), '');
+assert.equal(path.basename('/dir/basename.ext'), 'basename.ext');
+assert.equal(path.basename('/basename.ext'), 'basename.ext');
+assert.equal(path.basename('basename.ext'), 'basename.ext');
+assert.equal(path.basename('basename.ext/'), 'basename.ext');
+assert.equal(path.basename('basename.ext//'), 'basename.ext');
+
+if (isWindows) {
+  // On Windows a backslash acts as a path separator.
+  assert.equal(path.basename('\\dir\\basename.ext'), 'basename.ext');
+  assert.equal(path.basename('\\basename.ext'), 'basename.ext');
+  assert.equal(path.basename('basename.ext'), 'basename.ext');
+  assert.equal(path.basename('basename.ext\\'), 'basename.ext');
+  assert.equal(path.basename('basename.ext\\\\'), 'basename.ext');
+
+} else {
+  // On unix a backslash is just treated as any other character.
+  assert.equal(path.basename('\\dir\\basename.ext'), '\\dir\\basename.ext');
+  assert.equal(path.basename('\\basename.ext'), '\\basename.ext');
+  assert.equal(path.basename('basename.ext'), 'basename.ext');
+  assert.equal(path.basename('basename.ext\\'), 'basename.ext\\');
+  assert.equal(path.basename('basename.ext\\\\'), 'basename.ext\\\\');
+}
+
+// POSIX filenames may include control characters
+// c.f. http://www.dwheeler.com/essays/fixing-unix-linux-filenames.html
+if (!isWindows) {
+  var controlCharFilename = 'Icon' + String.fromCharCode(13);
+  assert.equal(path.basename('/a/b/' + controlCharFilename),
+               controlCharFilename);
+}
+
+assert.equal(path.extname(f), '.js');
+
+
 assert.equal(path.extname(''), '');
 assert.equal(path.extname('/path/to/file'), '');
 assert.equal(path.extname('/path/to/file.ext'), '.ext');
