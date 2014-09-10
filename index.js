@@ -95,3 +95,53 @@ exports.basename = function (filename, ext) {
 
   return basename;
 };
+
+exports.dirname = function (filename) {
+  if (!filename) return '.';
+
+  var isWindows = process.platform === 'win32';
+
+  var start = 0;
+  var device = '';
+
+  if (isWindows) {
+    // need to get device in windows
+    device = getDevice(filename);
+    if (device) start = device.length;
+  }
+
+  // /a.js///
+  var end = filename.length;
+  var c = filename[end - 1];
+  while (end >= start && c === path.sep || c === '/') {
+    end--;
+    c = filename[end - 1];
+  }
+
+  var lastSep = -1;
+  for (var i = end; i-- > start; ) {
+    var ch = filename[i];
+    if (lastSep === -1 && ch === '/') {
+      lastSep = i;
+      break;
+    }
+    if (isWindows && lastSep === -1 && ch === '\\') {
+      lastSep = i;
+      break;
+    }
+  }
+  if (lastSep <= start) {
+    if (device) return device;
+    if (filename[0] === '/' || filename[0] === path.sep) return filename[0];
+    return '.';
+  }
+
+  return device + filename.slice(start, lastSep);
+};
+
+var splitDeviceRe =
+      /^([a-zA-Z]:|[\\\/]{2}[^\\\/]+[\\\/]+[^\\\/]+)?([\\\/])?([\s\S]*?)$/;
+function getDevice(filename) {
+  var result = splitDeviceRe.exec(filename);
+  return (result[1] || '') + (result[2] || '');
+}
