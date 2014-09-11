@@ -27,9 +27,7 @@ $ npm install fast-path
 
 ## APIs
 
-* **extname(filename)**
-* **dirname(filename)**
-* **basename(filename)**
+The same as [native path APIs](http://nodejs.org/docs/v0.11.13/api/path.html)
 
 ## Usage
 
