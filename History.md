@@ -1,4 +1,11 @@
 
+1.0.0 / 2014-09-11 
+==================
+
+  * update api doc
+  * update readme benchmark
+  * import all path method from node native, improve normalize
+
 0.1.0 / 2014-09-10 
 ==================
 

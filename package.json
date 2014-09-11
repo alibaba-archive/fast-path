@@ -1,6 +1,6 @@
 {
   "name": "fast-path",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "a fast implementation of node's native path",
   "main": "index.js",
   "scripts": {
