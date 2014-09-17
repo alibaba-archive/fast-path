@@ -312,13 +312,15 @@ if (isWindows) {
 // path.resolve tests
 if (isWindows) {
   // windows
+  var cwd = process.cwd();
+  cwd = cwd[0].toLowerCase() + cwd.substr(1);
   var resolveTests =
       // arguments                                    result
       [[['c:/blah\\blah', 'd:/games', 'c:../a'], 'c:\\blah\\a'],
        [['c:/ignore', 'd:\\a/b\\c/d', '\\e.exe'], 'd:\\e.exe'],
        [['c:/ignore', 'c:/some/file'], 'c:\\some\\file'],
        [['d:/ignore', 'd:some/dir//'], 'd:\\ignore\\some\\dir'],
-       [['.'], process.cwd()],
+       [['.'], cwd],
        [['//server/share', '..', 'relative\\'], '\\\\server\\share\\relative'],
        [['c:/', '//'], 'c:\\'],
        [['c:/', '//dir'], 'c:\\dir'],

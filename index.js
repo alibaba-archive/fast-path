@@ -180,6 +180,11 @@ if (isWindows) {
     resolvedTail = normalizeArray(resolvedTail.split(/[\\\/]+/),
                                   !resolvedAbsolute).join('\\');
 
+    // If device is a drive letter, we'll normalize to lower case.
+    if (resolvedDevice && resolvedDevice.charAt(1) === ':') {
+      resolvedDevice = resolvedDevice[0].toLowerCase() + resolvedDevice.substr(1);
+    }
+
     return (resolvedDevice + (resolvedAbsolute ? '\\' : '') + resolvedTail) ||
            '.';
   };
