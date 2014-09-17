@@ -1,4 +1,9 @@
 
+1.1.0 / 2014-09-17 
+==================
+
+  * resolve work the same as normalize in windows
+
 1.0.0 / 2014-09-11 
 ==================
 
